@@ -3,6 +3,7 @@ import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
+// NumberGame class to create a frame where user can play the game with some set of rules and hints
 public class NumberGame extends JFrame implements ActionListener{
     int randomNumber;
     JButton exit, check;
@@ -104,15 +105,17 @@ public class NumberGame extends JFrame implements ActionListener{
         check.addActionListener(this);
 
     }
-
+    // ActionListener for NumberGame class for exit and check buttons
     public void actionPerformed(ActionEvent ae){
         if(ae.getSource()==exit){
             JOptionPane.showMessageDialog(null,"If you exit you won't be able to play the game");
             System.exit(0);
         }
+        // compare the guessed number to the random generated number and provide hints to the user
         else if(ae.getSource()==check){
             int guessedNumber = Integer.parseInt(guessTextField.getText());
             chances-=1;
+            //User Wins by guessing the correct number
             if(guessedNumber==randomNumber){
                     JOptionPane.showMessageDialog(null,"Congratulations! You Won.");
                     ++wins;
@@ -120,20 +123,25 @@ public class NumberGame extends JFrame implements ActionListener{
                     new PlayAgain(round,wins).setVisible(true);
 
             }
+            //User lose as not able to guess within 5 chances 
             else if(chances==0 ){
                     JOptionPane.showMessageDialog(null,"You Lose!");
                     setVisible(false);
                     new PlayAgain(round,wins).setVisible(true);
             }
+            //Hint 1
             else if(Math.abs(guessedNumber-randomNumber)>10 && guessedNumber>randomNumber){
                     JOptionPane.showMessageDialog(null,"Too High and You have "+chances+" left");
             }
+            // Hint 2    
             else if(Math.abs(guessedNumber-randomNumber)<=10 && guessedNumber>randomNumber){
                     JOptionPane.showMessageDialog(null,"High and You have "+chances+" left");
             }
+            // Hint 3    
             else if((randomNumber-guessedNumber)>10){
                     JOptionPane.showMessageDialog(null,"Too Low and You have "+chances+" left");
             }
+            //Hint 4
             else if((randomNumber-guessedNumber)<=10){
                     JOptionPane.showMessageDialog(null,"Low and You have "+chances+" left");
             }
@@ -141,13 +149,14 @@ public class NumberGame extends JFrame implements ActionListener{
         
     }
 
+    // this will create a initial frame of NumberGame class
     public static void main(String[] args){
 
         new NumberGame(1,0);
     }
     
 }
-
+// creating a new class to create a frame to ask if a user wants to play again or not
 class PlayAgain extends JFrame implements ActionListener{
   JButton yes, no;
   int round;
@@ -183,12 +192,14 @@ class PlayAgain extends JFrame implements ActionListener{
         no.addActionListener(this);
   
     }
-    
+    // ActionListener for PlayAgain class for yes and no buttons
     public void actionPerformed(ActionEvent ae){
+        // user will be able to play another round again 
         if(ae.getSource()==yes){
             setVisible(false);
             new NumberGame(++round,wins).setVisible(true);
         }
+        //show the final score of user before exiting the game 
         else if(ae.getSource()==no){
            JOptionPane.showMessageDialog(null,"Your final score: "+wins+"/"+round);
            System.exit(0);
