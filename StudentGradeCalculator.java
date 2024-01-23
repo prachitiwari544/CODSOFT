@@ -75,20 +75,23 @@ public class StudentGradeCalculator extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(null, "If you exit you won't be able to calculate your grade.");
             System.exit(0);
         } else if (ae.getSource() == calculate) {
-            // initially total marks will be 0;
-            int totalMarks = 0;
-            // a for loop to calculate totalMarks stored in marks array
-            for (int j = 0; j < totalSubjects; j++) {
-                totalMarks += Integer.parseInt(marks[j].getText());
+            //NumberFormatException handling
+            try {
+                // initially total marks will be 0;
+                int totalMarks = 0;
+                // a for loop to calculate totalMarks stored in marks array
+                for (int j = 0; j < totalSubjects; j++) {
+                    totalMarks += Integer.parseInt(marks[j].getText());
+                }
+                // average calculated
+                float average = Math.round((totalMarks / (float) totalSubjects) * 100) / 100.0f;
+                setVisible(false);
+                // new class is called
+                new ShowGrade(totalMarks, average).setVisible(true);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Invalid Input. Please enter numeric value (0-100)");
             }
-            // average calculated
-            float average = Math.round((totalMarks / (float) totalSubjects) * 100) / 100.0f;
-            setVisible(false);
-            // new class is called
-            new ShowGrade(totalMarks, average).setVisible(true);
-
         }
-
     }
 
     // main method to invoke StudentGradeCalculator constructor and take input of totalSubjects
